@@ -1,0 +1,66 @@
+<?php
+$query = 'select * from wp_team_members where status="1"';
+$members = $wpdb -> get_results($query, OBJECT);
+$designation_array = array('1'=>'Student Minister', '2'=>'Associate Student Minister', '3'=>'Associate To Worship & Media', '4'=>'Associate To High School Girls');
+$html='';
+$bg='#eeeeee';
+if(count($members)>0)
+{
+	$i=1;
+	foreach($members as $member)
+	{
+		if($i%2==0)
+		{
+			$bg='';
+		}
+		else {
+			$bg='alternate';
+		}
+		$html .='<tr valign="top" class="post-2 type-page status-publish hentry iedit author-self level-0 '.$bg.'">
+			<th class="check-column" scope="row">
+				'.$i.'
+			</th>
+			<td class="post-title page-title column-title">
+				<strong>
+					<a title="Edit “Sample Page”" href="?page=tm_admin_add_member&id='.$member->id.'" class="row-title">
+						'.$member->member_name.'
+					</a>
+				</strong>
+			</td>
+			<td class="author column-author">'.$designation_array[$member->member_designation].'</td>
+			<td class="date column-date">
+				'.$member->member_email.'
+			</td>
+			<td class="date">
+				<div><a href="?page=tm_admin_add_member&id='.$member->id.'&action=delete">Delete</a></div>
+			</td>
+		</tr>';
+		$i++;
+	}
+}
+//echo '<pre>';print_r($members);
+			?>
+<table cellspacing="0" class="wp-list-table widefat fixed pages">
+	<thead>
+		<tr>
+			<th style="" class="manage-column column-cb check-column" id="cb" scope="col">
+				#
+			</th>
+			<th style="" class="manage-column column-title sortable desc" id="title" scope="col">
+				<a href="javascript:void(0);">
+					<span>Name	</span>
+				</a>
+			</th>
+			<th style="" class="manage-column" id="author" scope="col">Designation</th>
+			<th style="" class="manage-column" id="date" scope="col">
+				E-mail
+			</th>
+			<th style="" class="manage-column column-date sortable asc" id="date" scope="col">
+				Action
+			</th>
+		</tr>
+	</thead>
+	<tbody id="the-list">
+		<?php echo $html;?>
+	</tbody>
+</table>
